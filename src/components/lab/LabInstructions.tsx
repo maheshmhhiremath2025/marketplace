@@ -4,7 +4,7 @@ import { useState, useEffect, useCallback, useRef } from 'react';
 import { LabInstruction } from '@/types/lab-instructions';
 import { getLabInstructions } from '@/data/lab-instructions';
 import TaskItem from './TaskItem';
-import { BookOpen, Clock, Target, CheckCircle2, ChevronDown, ChevronRight, Wifi, Copy, Loader2, Check, AlertCircle } from 'lucide-react';
+import { BookOpen, Clock, Target, CheckCircle2, ChevronDown, ChevronRight, Wifi, Copy, Loader2, Check, AlertCircle, FileText, Download } from 'lucide-react';
 import LabControls from './LabControls';
 import AzurePortalAccess from './AzurePortalAccess';
 
@@ -19,6 +19,7 @@ interface LabInstructionsProps {
     azureUsername?: string;
     azurePassword?: string;
     azureResourceGroup?: string;
+    requiresAzurePortal?: boolean; // NEW: Flag to show/hide Azure Portal Access
 }
 
 export default function LabInstructions({
@@ -31,7 +32,8 @@ export default function LabInstructions({
     sessionExpiresAt,
     azureUsername,
     azurePassword,
-    azureResourceGroup
+    azureResourceGroup,
+    requiresAzurePortal = false // Default to false
 }: LabInstructionsProps) {
     const [instructions, setInstructions] = useState<LabInstruction | null>(null);
     const [completedTasks, setCompletedTasks] = useState<Set<string>>(new Set());
@@ -275,15 +277,45 @@ export default function LabInstructions({
                     )}
                 </div>
 
-                {/* Azure Portal Access - NEW */}
-                <div className="border-b border-slate-200 p-3">
-                    <AzurePortalAccess
-                        courseId={courseId}
-                        azureUsername={azureUsername}
-                        azurePassword={azurePassword}
-                        azureResourceGroup={azureResourceGroup}
-                    />
-                </div>
+                {/* Cloud Slice Restrictions PDF - Only show for Cloud Slice courses */}
+                {requiresAzurePortal && (
+                    <div className="border-b border-slate-200">
+                        <div className="p-3 bg-amber-50 border-l-4 border-amber-500">
+                            <div className="flex items-start gap-3">
+                                <FileText className="w-5 h-5 text-amber-600 flex-shrink-0 mt-0.5" />
+                                <div className="flex-1">
+                                    <h4 className="font-semibold text-sm text-amber-900 mb-1">
+                                        Cloud Slice Restrictions
+                                    </h4>
+                                    <p className="text-xs text-amber-700 mb-2">
+                                        Please review the Azure resource restrictions and guidelines before starting your lab.
+                                    </p>
+                                    <a
+                                        href="/docs/cloud-slice-restrictions.pdf"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="inline-flex items-center gap-2 px-3 py-1.5 bg-amber-600 hover:bg-amber-700 text-white text-xs font-medium rounded-md transition-colors"
+                                    >
+                                        <FileText className="w-3.5 h-3.5" />
+                                        View Restrictions PDF
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                )}
+
+                {/* Azure Portal Access - Only show for Cloud Slice courses */}
+                {requiresAzurePortal && (
+                    <div className="border-b border-slate-200 p-3">
+                        <AzurePortalAccess
+                            courseId={courseId}
+                            azureUsername={azureUsername}
+                            azurePassword={azurePassword}
+                            azureResourceGroup={azureResourceGroup}
+                        />
+                    </div>
+                )}
 
                 {/* Learning Objectives - Collapsible */}
                 <div className="border-b border-slate-200">

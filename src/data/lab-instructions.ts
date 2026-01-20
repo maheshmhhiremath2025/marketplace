@@ -161,7 +161,7 @@ export const LAB_INSTRUCTIONS: Record<string, LabInstruction> = {
                     },
                     {
                         step: 5,
-                        action: 'In the Azure Portal, click the **Cloud Shell** icon (>_) in the top toolbar'
+                        action: 'In the VM, click the **Cloud Shell** icon (>_) in the top toolbar'
                     },
                     {
                         step: 6,
@@ -174,7 +174,7 @@ export const LAB_INSTRUCTIONS: Record<string, LabInstruction> = {
                     },
                     {
                         step: 8,
-                        action: 'In Cloud Shell, run the git clone command with your repository URL'
+                        action: 'In PowerShell, run the git clone command with your repository URL'
                     },
                     {
                         step: 9,
@@ -797,7 +797,7 @@ git push origin main`,
                 instructions: [
                     {
                         step: 1,
-                        action: 'Open Azure Portal using the credentials provided in the Resources tab'
+                        action: 'Connect to the VM using RDP using the credentials provided in the Resources tab'
                     },
                     {
                         step: 2,
@@ -2097,135 +2097,614 @@ aggregated_df.write.format("delta").saveAsTable("SalesByRegion")`,
     },
 
     /**
-    * WS011WV-2025: Windows Server 2025 Administration
-    * Enables Azure Portal Access (for hybrid scenarios)
-    */
+     * WS011WV-2025: Windows Server 2025 Administration - Comprehensive 16-Module Training
+     * VM-ONLY LAB: No Azure Portal access required
+     */
     'ws011wv-2025': {
-        id: 'ws011-lab-1',
+        id: 'ws011-lab-comprehensive',
         courseId: 'ws011wv-2025',
-        title: 'Deploy and Configure Windows Server 2025',
-        description: 'Install Windows Server 2025, configure core services, and set up hybrid management with Azure Arc.',
-        scenario: 'Relecloud needs to upgrade their infrastructure. You are tasked with deploying a new Windows Server 2025 instance and connecting it to Azure for centralized management.',
-        estimatedTime: 50,
+        title: 'Windows Server 2025 Administration - Complete Hands-On Training',
+        description: 'Comprehensive 16-module hands-on lab covering all aspects of Windows Server 2025 administration from User Management to Real-world Troubleshooting.',
+        scenario: 'You are a Windows Server Administrator at Contoso Corporation. This comprehensive training will prepare you for real-world server administration tasks across all key areas.',
+        estimatedTime: 480,
         difficulty: 'intermediate',
 
         objectives: [
-            'Deploy a Windows Server 2025 VM in Azure',
-            'Configure Windows Admin Center',
-            'Onboard the server to Azure Arc',
-            'Implement Hotpatching'
+            'Master local and Active Directory user management',
+            'Deploy and manage Active Directory Domain Services',
+            'Configure DNS and DHCP services',
+            'Implement Group Policy for centralized management',
+            'Manage file servers and storage solutions',
+            'Configure networking and security hardening',
+            'Automate tasks using PowerShell',
+            'Implement backup and disaster recovery',
+            'Manage Hyper-V virtualization',
+            'Monitor and optimize server performance',
+            'Handle real-world troubleshooting scenarios'
         ],
 
         prerequisites: [
-            'Basic knowledge of Windows Server administration',
-            'Access to Azure Portal'
+            'Basic Windows operating system knowledge',
+            'Understanding of networking concepts (TCP/IP, DNS, DHCP)',
+            'RDP client installed for VM access'
         ],
 
         introduction: {
-            overview: 'Windows Server 2025 introduces new hybrid capabilities and security features. This lab covers deployment and the new Azure Arc-enabled server management experience.',
-            scenario: 'You will provision a new server, configure it using modern tools, and enable hybrid management features to prepare for production deployment.',
-            architecture: 'Azure VM (Windows Server 2025) ↔ Azure Arc ↔ Azure Policy/Update Management'
+            overview: 'This comprehensive lab covers 16 modules of Windows Server 2025 administration. You will work through practical scenarios that mirror real-world enterprise environments, building skills from basic server setup to advanced troubleshooting.',
+            scenario: 'Throughout this lab, you will build and manage a complete Windows Server infrastructure for Contoso Corporation, implementing best practices and handling common administrative tasks.',
+            architecture: 'Windows Server 2025 VM → Active Directory Domain → DNS/DHCP Services → File Services → Group Policy → Hyper-V → Monitoring & Security'
         },
 
         tasks: [
+            // TASK 1: Module 1 & 2 - Server Setup and User Management
             {
                 id: 'task-1',
                 order: 1,
-                title: 'Provision Windows Server 2025 VM',
-                description: 'Create a new Virtual Machine running Windows Server 2025.',
-
-                instructions: [
-                    {
-                        step: 1,
-                        action: 'Open Azure Portal and search for **Virtual Machines**'
-                    },
-                    {
-                        step: 2,
-                        action: 'Click **Create** -> **Azure virtual machine**'
-                    },
-                    {
-                        step: 3,
-                        action: 'Select the resource group and name the VM **WS2025-Lab**'
-                    },
-                    {
-                        step: 4,
-                        action: 'For Image, select **Windows Server 2025 Datacenter Azure Edition**'
-                    },
-                    {
-                        step: 5,
-                        action: 'Select a size (e.g., **Standard_D2s_v5**) and create an admin account'
-                    },
-                    {
-                        step: 6,
-                        action: 'Allow RDP (3389) inbound'
-                    },
-                    {
-                        step: 7,
-                        action: 'Review and Create'
-                    }
-                ],
-
-                verification: {
-                    type: 'manual',
-                    description: 'Verify VM is running',
-                    expectedResult: 'VM status should be "Running" in Azure Portal.'
-                }
-            },
-            {
-                id: 'task-2',
-                order: 2,
-                title: 'Enable Azure Arc and Hotpatching',
-                description: 'Configure the Automanage features specific to Azure Edition.',
+                title: 'Module 2: User & Group Management (Local & AD)',
+                description: 'Comprehensive user/group management using GUI and PowerShell, including NTFS permissions and password policies.',
 
                 knowledgeBlocks: [
                     {
                         type: 'note',
-                        title: 'Hotpatching',
-                        content: 'Hotpatching allows you to patch in-memory code of running processes without the need to restart the process/server. It requires Windows Server Azure Edition.'
+                        title: 'Windows Server 2025 New Features',
+                        content: 'Windows Server 2025 introduces Hotpatching, enhanced security features, improved Hyper-V capabilities, and better cloud integration options.'
+                    },
+                    {
+                        type: 'tip',
+                        title: 'NTFS vs Share Permissions',
+                        content: 'NTFS permissions apply to both local and network access, while Share permissions only apply to network access. The most restrictive permission always wins.'
                     }
                 ],
 
                 instructions: [
-                    {
-                        step: 1,
-                        action: 'Navigate to the VM blade in Azure Portal'
-                    },
-                    {
-                        step: 2,
-                        action: 'Under **Operations**, select **Updates**'
-                    },
-                    {
-                        step: 3,
-                        action: 'Ensure **Hotpatch** is enabled (it is enabled by default for Azure Edition images)'
-                    },
-                    {
-                        step: 4,
-                        action: 'Review the compliance status'
-                    }
+                    // Local User Management
+                    { step: 1, action: 'Open **Computer Management** → **Local Users and Groups**' },
+                    { step: 2, action: 'Create local user **JohnDoe** with password **P@ssw0rd123**' },
+                    { step: 3, action: 'Create local group **IT_Admins**' },
+                    { step: 4, action: 'Add JohnDoe to IT_Admins group' },
+
+                    // NTFS Permissions
+                    { step: 5, action: 'Create folder **C:\\SharedData**' },
+                    { step: 6, action: 'Right-click → **Properties** → **Security** tab' },
+                    { step: 7, action: 'Click **Edit** → **Add** → Add **IT_Admins** group with **Modify** permission' },
+                    { step: 8, action: 'Add **Users** group with **Read** permission' },
+
+                    // PowerShell User Management
+                    { step: 9, action: 'Open **PowerShell** as Administrator' },
+                    { step: 10, action: 'Run: `New-LocalUser -Name "JaneSmith" -Password (ConvertTo-SecureString "P@ssw0rd123" -AsPlainText -Force)`' },
+                    { step: 11, action: 'Run: `Add-LocalGroupMember -Group "IT_Admins" -Member "JaneSmith"`' },
+                    { step: 12, action: 'Run: `Get-LocalGroupMember -Group "IT_Admins"` to verify' },
+
+                    // Password Policies
+                    { step: 13, action: 'Open **Local Security Policy** (secpol.msc)' },
+                    { step: 14, action: 'Navigate to **Account Policies** → **Password Policy**' },
+                    { step: 15, action: 'Set **Minimum password length** to **12 characters**' },
+                    { step: 16, action: 'Enable **Password must meet complexity requirements**' },
+                    { step: 17, action: 'Set **Maximum password age** to **90 days**' },
+
+                    // Account Lockout Policy
+                    { step: 18, action: 'Navigate to **Account Policies** → **Account Lockout Policy**' },
+                    { step: 19, action: 'Set **Account lockout threshold** to **5 invalid attempts**' },
+                    { step: 20, action: 'Set **Account lockout duration** to **30 minutes**' },
+                    { step: 21, action: 'Click **Apply** and close Local Security Policy' }
                 ],
 
                 verification: {
                     type: 'manual',
-                    description: 'Verify Hotpatch status',
-                    expectedResult: 'Hotpatch setting should show as Enabled.'
+                    description: 'Verify user and group configuration',
+                    expectedResult: 'Users JohnDoe and JaneSmith exist in IT_Admins group. C:\\SharedData has IT_Admins with Modify and Users with Read permissions. Password policy requires 12 characters minimum with complexity. Account lockout set to 5 attempts.'
+                }
+            },
+
+            // TASK 2: Module 3 - Active Directory Domain Services
+            {
+                id: 'task-2',
+                order: 2,
+                title: 'Module 3: Active Directory Domain Services (AD DS)',
+                description: 'Install AD DS, promote server to Domain Controller, create domain structure, and manage FSMO roles.',
+
+                knowledgeBlocks: [
+                    {
+                        type: 'note',
+                        title: 'FSMO Roles',
+                        content: 'Five FSMO roles: Schema Master and Domain Naming Master (forest-wide); RID Master, PDC Emulator, and Infrastructure Master (domain-wide).'
+                    },
+                    {
+                        type: 'warning',
+                        title: 'Domain Controller Promotion',
+                        content: 'Promoting a server to Domain Controller will restart the server automatically. Ensure all work is saved before proceeding.'
+                    }
+                ],
+
+                instructions: [
+                    // Install AD DS Role
+                    { step: 1, action: 'Open **Server Manager** → **Manage** → **Add Roles and Features**' },
+                    { step: 2, action: 'Click **Next** until **Server Roles** page' },
+                    { step: 3, action: 'Select **Active Directory Domain Services**' },
+                    { step: 4, action: 'Click **Add Features** when prompted, then **Next**' },
+                    { step: 5, action: 'Click **Next** → **Next** → **Install**' },
+                    { step: 6, action: 'Wait for installation to complete (do not close window)' },
+
+                    // Promote to Domain Controller
+                    { step: 7, action: 'Click **Promote this server to a domain controller** link' },
+                    { step: 8, action: 'Select **Add a new forest**' },
+                    { step: 9, action: 'Enter Root domain name: **contoso.local**' },
+                    { step: 10, action: 'Click **Next**' },
+                    { step: 11, action: 'Set Forest/Domain functional level to **Windows Server 2025**' },
+                    { step: 12, action: 'Ensure **Domain Name System (DNS) server** is checked' },
+                    { step: 13, action: 'Enter DSRM password: **P@ssw0rd123!** (confirm it)' },
+                    { step: 14, action: 'Click **Next** (ignore DNS delegation warning)' },
+                    { step: 15, action: 'Verify NetBIOS name is **CONTOSO**, click **Next**' },
+                    { step: 16, action: 'Accept default paths for Database, Log files, and SYSVOL' },
+                    { step: 17, action: 'Review options, click **Next**' },
+                    { step: 18, action: 'Wait for prerequisite check, then click **Install**' },
+                    { step: 19, action: 'Server will restart automatically - wait for restart' },
+                    { step: 20, action: 'Login as **CONTOSO\\Administrator** with your password' },
+
+                    // Create OU Structure
+                    { step: 21, action: 'Open **Active Directory Users and Computers** (dsa.msc)' },
+                    { step: 22, action: 'Expand **contoso.local** domain' },
+                    { step: 23, action: 'Right-click **contoso.local** → **New** → **Organizational Unit**' },
+                    { step: 24, action: 'Name it **Departments**, uncheck **Protect from deletion**' },
+                    { step: 25, action: 'Create sub-OUs under Departments: **IT**, **HR**, **Sales**' },
+
+                    // Create Domain Users
+                    { step: 26, action: 'Right-click **IT** OU → **New** → **User**' },
+                    { step: 27, action: 'First name: **Admin**, Last name: **User**, Logon name: **adminuser**' },
+                    { step: 28, action: 'Set password **P@ssw0rd123!**, uncheck **User must change password**' },
+                    { step: 29, action: 'Right-click **adminuser** → **Add to a group** → Enter **Domain Admins** → **OK**' },
+                    { step: 30, action: 'Create 2 more users in HR OU: **hruser1** and **hruser2**' },
+
+                    // Create Security and Distribution Groups
+                    { step: 31, action: 'Right-click **IT** OU → **New** → **Group**' },
+                    { step: 32, action: 'Name: **IT_Security**, Group scope: **Global**, Group type: **Security**' },
+                    { step: 33, action: 'Create another group: **IT_Distribution**, Group type: **Distribution**' },
+                    { step: 34, action: 'Add adminuser to IT_Security group' },
+
+                    // Verify FSMO Roles
+                    { step: 35, action: 'Open **PowerShell** as Administrator' },
+                    { step: 36, action: 'Run: `netdom query fsmo`' },
+                    { step: 37, action: 'Verify all 5 FSMO roles are on **WS2025-DC01**' },
+
+                    // Backup System State
+                    { step: 38, action: 'In Server Manager, click **Tools** → **Windows Server Backup**' },
+                    { step: 39, action: 'Click **Backup Once** → **Different options**' },
+                    { step: 40, action: 'Select **Custom**, click **Next**' },
+                    { step: 41, action: 'Click **Add Items** → Select **System state** → **OK**' },
+                    { step: 42, action: 'Choose **Local drives**, select a drive with space, click **Next** → **Backup**' }
+                ],
+
+                verification: {
+                    type: 'manual',
+                    description: 'Verify Active Directory configuration',
+                    expectedResult: 'Domain contoso.local created with OUs (Departments/IT/HR/Sales). User adminuser in Domain Admins. Groups IT_Security and IT_Distribution created. All 5 FSMO roles on WS2025-DC01. System State backup completed.'
+                }
+            },
+
+            // TASK 3: Module 4 - DNS Administration
+            {
+                id: 'task-3',
+                order: 3,
+                title: 'Module 4: DNS Administration',
+                description: 'Configure DNS zones, create DNS records, and integrate with Active Directory.',
+
+                knowledgeBlocks: [
+                    {
+                        type: 'note',
+                        title: 'DNS Record Types',
+                        content: 'A record: Maps hostname to IPv4. CNAME: Alias for another name. MX: Mail exchange server. PTR: Reverse lookup (IP to hostname).'
+                    }
+                ],
+
+                instructions: [
+                    // DNS Configuration
+                    { step: 1, action: 'Open **DNS Manager** from Server Manager → Tools' },
+                    { step: 2, action: 'Expand **WS2025-DC01** → **Forward Lookup Zones**' },
+                    { step: 3, action: 'Verify **contoso.local** zone exists (created during AD installation)' },
+
+                    // Create Forward Lookup Zone
+                    { step: 4, action: 'Right-click **Forward Lookup Zones** → **New Zone**' },
+                    { step: 5, action: 'Click **Next** → Select **Primary zone** → **Next**' },
+                    { step: 6, action: 'Enter zone name: **lab.contoso.local** → **Next**' },
+                    { step: 7, action: 'Accept default zone file name → **Next** → **Finish**' },
+
+                    // Create DNS Records
+                    { step: 8, action: 'Right-click **lab.contoso.local** → **New Host (A or AAAA)**' },
+                    { step: 9, action: 'Name: **web**, IP: **192.168.1.100** → **Add Host**' },
+                    { step: 10, action: 'Create another A record: Name: **mail**, IP: **192.168.1.101**' },
+
+                    // Create CNAME Record
+                    { step: 11, action: 'Right-click **lab.contoso.local** → **New Alias (CNAME)**' },
+                    { step: 12, action: 'Alias name: **www**, FQDN: **web.lab.contoso.local** → **OK**' },
+
+                    // Create MX Record
+                    { step: 13, action: 'Right-click **lab.contoso.local** → **New Mail Exchanger (MX)**' },
+                    { step: 14, action: 'Leave Host blank, FQDN: **mail.lab.contoso.local**, Priority: **10** → **OK**' },
+
+                    // Create Reverse Lookup Zone
+                    { step: 15, action: 'Right-click **Reverse Lookup Zones** → **New Zone**' },
+                    { step: 16, action: 'Click **Next** → **Primary zone** → **Next**' },
+                    { step: 17, action: 'Select **IPv4 Reverse Lookup Zone** → **Next**' },
+                    { step: 18, action: 'Network ID: **192.168.1** → **Next** → **Next** → **Finish**' },
+
+                    // Create PTR Record
+                    { step: 19, action: 'Right-click **1.168.192.in-addr.arpa** zone → **New Pointer (PTR)**' },
+                    { step: 20, action: 'Host IP: **192.168.1.10**, Hostname: **ws2025-dc01.contoso.local** → **OK**' },
+
+                    // Test DNS
+                    { step: 21, action: 'Open **PowerShell**' },
+                    { step: 22, action: 'Run: `nslookup web.lab.contoso.local` - should return 192.168.1.100' },
+                    { step: 23, action: 'Run: `nslookup www.lab.contoso.local` - should resolve to web.lab.contoso.local' },
+                    { step: 24, action: 'Run: `nslookup 192.168.1.10` - should return ws2025-dc01.contoso.local' },
+                    { step: 25, action: 'Run: `ping web.lab.contoso.local` to test resolution' }
+                ],
+
+                verification: {
+                    type: 'manual',
+                    description: 'Verify DNS configuration',
+                    expectedResult: 'Forward zone lab.contoso.local created with A records (web, mail), CNAME (www), and MX record. Reverse zone 1.168.192.in-addr.arpa created with PTR record. nslookup tests successful.'
+                }
+            },
+
+            // TASK 4: Module 5 - DHCP Administration
+            {
+                id: 'task-4',
+                order: 4,
+                title: 'Module 5: DHCP Administration',
+                description: 'Install DHCP role, create scopes, configure options, and set up reservations.',
+
+                instructions: [
+                    // Install DHCP Role
+                    { step: 1, action: 'Open **Server Manager** → **Add Roles and Features**' },
+                    { step: 2, action: 'Click **Next** until **Server Roles**, select **DHCP Server**' },
+                    { step: 3, action: 'Click **Add Features** → **Next** → **Next** → **Install**' },
+                    { step: 4, action: 'After installation, click **Complete DHCP configuration**' },
+                    { step: 5, action: 'Click **Commit** → **Close**' },
+
+                    // Create DHCP Scope
+                    { step: 6, action: 'Open **DHCP** from Server Manager → Tools' },
+                    { step: 7, action: 'Expand **WS2025-DC01** → Right-click **IPv4** → **New Scope**' },
+                    { step: 8, action: 'Click **Next**, Name: **Lab Scope**, Description: **Main office network**' },
+                    { step: 9, action: 'Start IP: **192.168.1.100**, End IP: **192.168.1.200**, Subnet mask: **255.255.255.0**' },
+                    { step: 10, action: 'Click **Next**' },
+
+                    // Configure Exclusions
+                    { step: 11, action: 'Add exclusion: Start: **192.168.1.100**, End: **192.168.1.110** (reserve for servers)' },
+                    { step: 12, action: 'Click **Add** → **Next**' },
+
+                    // Set Lease Duration
+                    { step: 13, action: 'Set lease duration to **8 days** → **Next**' },
+
+                    // Configure DHCP Options
+                    { step: 14, action: 'Select **Yes, I want to configure these options now** → **Next**' },
+                    { step: 15, action: 'Router (Default Gateway): **192.168.1.1** → **Add** → **Next**' },
+                    { step: 16, action: 'DNS Server: **192.168.1.10** (this server) → **Add** → **Next**' },
+                    { step: 17, action: 'WINS Servers: Skip → **Next**' },
+                    { step: 18, action: 'Select **Yes, I want to activate this scope now** → **Next** → **Finish**' },
+
+                    // Create Reservation
+                    { step: 19, action: 'Expand **Scope [192.168.1.0] Lab Scope**' },
+                    { step: 20, action: 'Right-click **Reservations** → **New Reservation**' },
+                    { step: 21, action: 'Name: **Printer1**, IP: **192.168.1.150**, MAC: **00-15-5D-00-00-01**' },
+                    { step: 22, action: 'Click **Add** → **Close**' },
+
+                    // Verify DHCP
+                    { step: 23, action: 'Right-click **IPv4** → **Display Statistics**' },
+                    { step: 24, action: 'Verify scope is active and shows available addresses' },
+                    { step: 25, action: 'In PowerShell, run: `Get-DhcpServerv4Scope` to verify configuration' }
+                ],
+
+                verification: {
+                    type: 'manual',
+                    description: 'Verify DHCP configuration',
+                    expectedResult: 'DHCP scope 192.168.1.100-200 created with exclusion 100-110. Lease duration 8 days. Options configured: Gateway 192.168.1.1, DNS 192.168.1.10. Reservation for Printer1 at 192.168.1.150.'
+                }
+            },
+
+            // TASK 5: Module 6 - Group Policy (GPO)
+            {
+                id: 'task-5',
+                order: 5,
+                title: 'Module 6: Group Policy (GPO)',
+                description: 'Create and configure Group Policy Objects for centralized management, including password policies, desktop restrictions, and software deployment.',
+
+                knowledgeBlocks: [
+                    {
+                        type: 'tip',
+                        title: 'GPO Processing Order',
+                        content: 'GPOs are processed in order: Local → Site → Domain → OU. Settings applied last take precedence unless "Enforced" is set.'
+                    }
+                ],
+
+                instructions: [
+                    // Create Password Policy GPO
+                    { step: 1, action: 'Open **Group Policy Management** from Server Manager → Tools' },
+                    { step: 2, action: 'Expand **Forest: contoso.local** → **Domains** → **contoso.local**' },
+                    { step: 3, action: 'Right-click **Group Policy Objects** → **New**' },
+                    { step: 4, action: 'Name: **Domain Password Policy** → **OK**' },
+                    { step: 5, action: 'Right-click **Domain Password Policy** → **Edit**' },
+                    { step: 6, action: 'Navigate to **Computer Configuration** → **Policies** → **Windows Settings** → **Security Settings** → **Account Policies** → **Password Policy**' },
+                    { step: 7, action: 'Set **Minimum password length** to **14 characters**' },
+                    { step: 8, action: 'Enable **Password must meet complexity requirements**' },
+                    { step: 9, action: 'Set **Maximum password age** to **60 days**' },
+                    { step: 10, action: 'Close Group Policy Editor' },
+                    { step: 11, action: 'Link GPO: Right-click **contoso.local** domain → **Link an Existing GPO** → Select **Domain Password Policy**' },
+
+                    // Create Desktop Restrictions GPO
+                    { step: 12, action: 'Create new GPO: **Desktop Restrictions**' },
+                    { step: 13, action: 'Edit the GPO, navigate to **User Configuration** → **Policies** → **Administrative Templates** → **Control Panel**' },
+                    { step: 14, action: 'Enable **Prohibit access to Control Panel and PC settings**' },
+                    { step: 15, action: 'Navigate to **Desktop** → Enable **Remove Recycle Bin icon from desktop**' },
+                    { step: 16, action: 'Navigate to **System** → **Removable Storage Access**' },
+                    { step: 17, action: 'Enable **All Removable Storage classes: Deny all access** (USB blocking)' },
+                    { step: 18, action: 'Close editor, link GPO to **HR** OU' },
+
+                    // Create Folder Redirection GPO
+                    { step: 19, action: 'Create new GPO: **Folder Redirection**' },
+                    { step: 20, action: 'Edit GPO, navigate to **User Configuration** → **Policies** → **Windows Settings** → **Folder Redirection** → **Documents**' },
+                    { step: 21, action: 'Right-click **Documents** → **Properties**' },
+                    { step: 22, action: 'Setting: **Basic**, Target folder location: **\\\\\\\\WS2025-DC01\\\\Users\\\\%USERNAME%\\\\Documents**' },
+                    { step: 23, action: 'Click **OK**, link GPO to **IT** OU' },
+
+                    // Test GPO Application
+                    { step: 24, action: 'Open **PowerShell** as Administrator' },
+                    { step: 25, action: 'Run: `gpupdate /force` to apply GPOs immediately' },
+                    { step: 26, action: 'Run: `gpresult /r` to view applied GPOs' },
+                    { step: 27, action: 'Run: `rsop.msc` to open Resultant Set of Policy' },
+                    { step: 28, action: 'Verify password policy and desktop restrictions are applied' }
+                ],
+
+                verification: {
+                    type: 'manual',
+                    description: 'Verify Group Policy configuration',
+                    expectedResult: 'Three GPOs created: Domain Password Policy (linked to domain), Desktop Restrictions (linked to HR OU with Control Panel blocked and USB disabled), Folder Redirection (linked to IT OU). gpresult shows policies applied.'
+                }
+            },
+
+            // TASK 6: Module 7-8 - File Server & Networking
+            {
+                id: 'task-6',
+                order: 6,
+                title: 'Module 7-8: File Server & Windows Networking',
+                description: 'Configure file shares, NTFS/Share permissions, quotas, and network settings including firewall rules.',
+
+                instructions: [
+                    // Create Shared Folders
+                    { step: 1, action: 'Create folder **C:\\\\Shares\\\\Public**' },
+                    { step: 2, action: 'Right-click folder → **Properties** → **Sharing** tab → **Advanced Sharing**' },
+                    { step: 3, action: 'Check **Share this folder**, Share name: **Public**' },
+                    { step: 4, action: 'Click **Permissions** → Add **Everyone** with **Read** permission' },
+                    { step: 5, action: 'Click **OK**, switch to **Security** tab' },
+                    { step: 6, action: 'Add **Domain Users** with **Modify** NTFS permission' },
+                    { step: 7, action: 'Create another share: **C:\\\\Shares\\\\IT** with share name **IT$** (hidden share)' },
+                    { step: 8, action: 'Give **IT_Security** group **Full Control** on both Share and NTFS permissions' },
+
+                    // Configure Quotas
+                    { step: 9, action: 'Open **Server Manager** → **File and Storage Services** → **Shares**' },
+                    { step: 10, action: 'Right-click **Public** share → **Properties** → **Quota**' },
+                    { step: 11, action: 'Enable quotas, set **Limit disk space to: 100 MB**' },
+                    { step: 12, action: 'Set warning level to **80 MB** → **OK**' },
+
+                    // Network Configuration
+                    { step: 13, action: 'Open **Network and Sharing Center** → **Change adapter settings**' },
+                    { step: 14, action: 'Right-click network adapter → **Properties**' },
+                    { step: 15, action: 'Verify **Internet Protocol Version 4 (TCP/IPv4)** settings: IP 192.168.1.10, Subnet 255.255.255.0, Gateway 192.168.1.1, DNS 127.0.0.1' },
+
+                    // Firewall Configuration
+                    { step: 16, action: 'Open **Windows Defender Firewall with Advanced Security**' },
+                    { step: 17, action: 'Click **Inbound Rules** → **New Rule**' },
+                    { step: 18, action: 'Rule Type: **Port** → **Next**' },
+                    { step: 19, action: 'Protocol: **TCP**, Specific ports: **8080** → **Next**' },
+                    { step: 20, action: 'Action: **Allow the connection** → **Next**' },
+                    { step: 21, action: 'Apply to: **Domain, Private, Public** → **Next**' },
+                    { step: 22, action: 'Name: **Allow Web App Port 8080** → **Finish**' },
+
+                    // Test Connectivity
+                    { step: 23, action: 'Open **PowerShell**' },
+                    { step: 24, action: 'Run: `Test-Connection -ComputerName 192.168.1.1 -Count 4` (ping gateway)' },
+                    { step: 25, action: 'Run: `Test-NetConnection -ComputerName web.lab.contoso.local -Port 80`' },
+                    { step: 26, action: 'Run: `Get-NetFirewallRule -DisplayName "Allow Web App*"` to verify firewall rule' }
+                ],
+
+                verification: {
+                    type: 'manual',
+                    description: 'Verify file sharing and networking',
+                    expectedResult: 'Shares created: Public (Everyone Read, Domain Users Modify) and IT$ (IT_Security Full Control). Quota set to 100MB on Public. Firewall rule created for port 8080. Network connectivity tests successful.'
+                }
+            },
+
+            // TASK 7: Module 9-10 - Security & PowerShell
+            {
+                id: 'task-7',
+                order: 7,
+                title: 'Module 9-10: Security Hardening & PowerShell Automation',
+                description: 'Configure Windows Defender, BitLocker, audit policies, and create PowerShell automation scripts.',
+
+                knowledgeBlocks: [
+                    {
+                        type: 'warning',
+                        title: 'BitLocker Requirements',
+                        content: 'BitLocker requires TPM 2.0 or a startup key on USB. In VMs, you may need to enable TPM in VM settings.'
+                    }
+                ],
+
+                instructions: [
+                    // Windows Defender
+                    { step: 1, action: 'Open **Windows Security** from Start menu' },
+                    { step: 2, action: 'Click **Virus & threat protection** → **Manage settings**' },
+                    { step: 3, action: 'Ensure **Real-time protection** is **On**' },
+                    { step: 4, action: 'Click **Virus & threat protection** → **Scan options** → Run **Quick scan**' },
+
+                    // Audit Policy
+                    { step: 5, action: 'Open **Local Security Policy** (secpol.msc)' },
+                    { step: 6, action: 'Navigate to **Local Policies** → **Audit Policy**' },
+                    { step: 7, action: 'Enable **Audit account logon events** for **Success** and **Failure**' },
+                    { step: 8, action: 'Enable **Audit logon events** for **Success** and **Failure**' },
+                    { step: 9, action: 'Enable **Audit object access** for **Failure**' },
+
+                    // Event Viewer
+                    { step: 10, action: 'Open **Event Viewer** (eventvwr.msc)' },
+                    { step: 11, action: 'Navigate to **Windows Logs** → **Security**' },
+                    { step: 12, action: 'Review recent security events (logon attempts, policy changes)' },
+                    { step: 13, action: 'Right-click **Security** → **Filter Current Log** → Event ID: **4624** (successful logon)' },
+
+                    // PowerShell Automation - User Creation
+                    { step: 14, action: 'Open **PowerShell ISE** as Administrator' },
+                    { step: 15, action: 'Create new script: `New-ADUser -Name "TestUser1" -GivenName "Test" -Surname "User1" -SamAccountName "testuser1" -UserPrincipalName "testuser1@contoso.local" -Path "OU=IT,OU=Departments,DC=contoso,DC=local" -AccountPassword (ConvertTo-SecureString "P@ssw0rd123" -AsPlainText -Force) -Enabled $true`' },
+                    { step: 16, action: 'Run the script to create user' },
+
+                    // Bulk User Creation from CSV
+                    { step: 17, action: 'Create CSV file **C:\\\\Scripts\\\\users.csv** with headers: FirstName,LastName,Username,OU' },
+                    { step: 18, action: 'Add sample data: `John,Smith,jsmith,OU=HR,OU=Departments,DC=contoso,DC=local`' },
+                    { step: 19, action: 'Create PowerShell script: `Import-Csv "C:\\\\Scripts\\\\users.csv" | ForEach-Object { New-ADUser -Name "$($_.FirstName) $($_.LastName)" -GivenName $_.FirstName -Surname $_.LastName -SamAccountName $_.Username -UserPrincipalName "$($_.Username)@contoso.local" -Path $_.OU -AccountPassword (ConvertTo-SecureString "P@ssw0rd123" -AsPlainText -Force) -Enabled $true }`' },
+                    { step: 20, action: 'Run script to create users from CSV' },
+
+                    // Service Management
+                    { step: 21, action: 'Run: `Get-Service -Name "Spooler" | Select-Object Name, Status, StartType`' },
+                    { step: 22, action: 'Run: `Stop-Service -Name "Spooler"`' },
+                    { step: 23, action: 'Run: `Set-Service -Name "Spooler" -StartupType Manual`' },
+                    { step: 24, action: 'Run: `Start-Service -Name "Spooler"`' },
+
+                    // AD Reporting
+                    { step: 25, action: 'Run: `Get-ADUser -Filter * -Properties * | Select-Object Name, SamAccountName, Enabled, LastLogonDate | Export-Csv "C:\\\\Reports\\\\ADUsers.csv" -NoTypeInformation`' },
+                    { step: 26, action: 'Run: `Get-ADGroup -Filter * | Select-Object Name, GroupScope, GroupCategory | Export-Csv "C:\\\\Reports\\\\ADGroups.csv" -NoTypeInformation`' },
+                    { step: 27, action: 'Open the CSV files to verify reports' }
+                ],
+
+                verification: {
+                    type: 'manual',
+                    description: 'Verify security and PowerShell configuration',
+                    expectedResult: 'Windows Defender active with scan completed. Audit policies enabled for logon events. Event Viewer shows security logs. PowerShell scripts created users (TestUser1 and CSV imports). Service management commands executed. AD reports exported to CSV.'
+                }
+            },
+
+            // TASK 8: Module 11-16 - Backup, Hyper-V, Monitoring & Real-world Scenarios
+            {
+                id: 'task-8',
+                order: 8,
+                title: 'Module 11-16: Backup, Hyper-V, Monitoring & Troubleshooting',
+                description: 'Configure backups, manage Hyper-V, monitor performance, and handle real-world troubleshooting scenarios.',
+
+                knowledgeBlocks: [
+                    {
+                        type: 'note',
+                        title: 'Hyper-V Requirements',
+                        content: 'Hyper-V requires hardware virtualization support (Intel VT-x or AMD-V). Nested virtualization must be enabled if running in a VM.'
+                    },
+                    {
+                        type: 'tip',
+                        title: 'Performance Monitoring',
+                        content: 'Use Performance Monitor (perfmon) to track CPU, Memory, Disk, and Network metrics over time. Create baselines during normal operation.'
+                    }
+                ],
+
+                instructions: [
+                    // Windows Server Backup
+                    { step: 1, action: 'Open **Windows Server Backup** from Server Manager → Tools' },
+                    { step: 2, action: 'Click **Local Backup** → **Backup Schedule**' },
+                    { step: 3, action: 'Select **Different options** → **Next**' },
+                    { step: 4, action: 'Select **Custom** → **Next** → **Add Items**' },
+                    { step: 5, action: 'Select **C:\\\\ drive** and **System State** → **OK** → **Next**' },
+                    { step: 6, action: 'Set backup time: **Once a day at 2:00 AM** → **Next**' },
+                    { step: 7, action: 'Select backup destination (dedicated disk or network location) → **Next** → **Finish**' },
+
+                    // Hyper-V Installation
+                    { step: 8, action: 'Open **Server Manager** → **Add Roles and Features**' },
+                    { step: 9, action: 'Select **Hyper-V** role → **Add Features**' },
+                    { step: 10, action: 'Click **Next**, select network adapter for virtual switch → **Next** → **Install**' },
+                    { step: 11, action: 'Restart server after installation' },
+
+                    // Create Virtual Switch
+                    { step: 12, action: 'Open **Hyper-V Manager** from Server Manager → Tools' },
+                    { step: 13, action: 'Click **Virtual Switch Manager** → **New virtual network switch**' },
+                    { step: 14, action: 'Select **External** → **Create Virtual Switch**' },
+                    { step: 15, action: 'Name: **External Switch**, select network adapter → **OK**' },
+
+                    // Create Virtual Machine
+                    { step: 16, action: 'In Hyper-V Manager, click **New** → **Virtual Machine**' },
+                    { step: 17, action: 'Click **Next**, Name: **TestVM1** → **Next**' },
+                    { step: 18, action: 'Generation: **Generation 2** → **Next**' },
+                    { step: 19, action: 'Startup memory: **2048 MB**, enable **Dynamic Memory** → **Next**' },
+                    { step: 20, action: 'Connection: **External Switch** → **Next**' },
+                    { step: 21, action: 'Create virtual hard disk: **50 GB** → **Next** → **Finish**' },
+
+                    // Performance Monitoring
+                    { step: 22, action: 'Open **Task Manager** (Ctrl+Shift+Esc)' },
+                    { step: 23, action: 'Review **Performance** tab for CPU, Memory, Disk, Network usage' },
+                    { step: 24, action: 'Open **Resource Monitor** (resmon.exe)' },
+                    { step: 25, action: 'Review CPU, Memory, Disk, and Network tabs for detailed metrics' },
+                    { step: 26, action: 'Open **Performance Monitor** (perfmon.msc)' },
+                    { step: 27, action: 'Click **Performance Monitor** → **Add counters** (green +)' },
+                    { step: 28, action: 'Add: **Processor** → **% Processor Time**, **Memory** → **Available MBytes**, **PhysicalDisk** → **% Disk Time**' },
+                    { step: 29, action: 'Monitor for 2 minutes to see real-time performance' },
+
+                    // Real-world Troubleshooting Scenarios
+                    { step: 30, action: '**Scenario 1: User Cannot Login** - Open **Event Viewer** → **Security** log → Filter Event ID **4625** (failed logon) → Check for account lockout' },
+                    { step: 31, action: 'Run: `net user username /domain` to check account status' },
+                    { step: 32, action: 'If locked, run: `Unlock-ADAccount -Identity username`' },
+
+                    { step: 33, action: '**Scenario 2: DNS Resolution Failure** - Run: `nslookup contoso.local` to test DNS' },
+                    { step: 34, action: 'Run: `ipconfig /flushdns` to clear DNS cache' },
+                    { step: 35, action: 'Verify DNS service is running: `Get-Service -Name "DNS"`' },
+
+                    { step: 36, action: '**Scenario 3: GPO Not Applying** - Run: `gpupdate /force` on client' },
+                    { step: 37, action: 'Run: `gpresult /h C:\\\\GPReport.html` to generate detailed report' },
+                    { step: 38, action: 'Open report in browser, check for errors or filtering issues' },
+
+                    { step: 39, action: '**Scenario 4: Disk Full** - Open **Disk Management** (diskmgmt.msc)' },
+                    { step: 40, action: 'Run: `Get-ChildItem C:\\\\ -Recurse | Sort-Object Length -Descending | Select-Object -First 20 FullName, @{Name="SizeMB";Expression={$_.Length / 1MB}}` to find large files' },
+                    { step: 41, action: 'Use **Disk Cleanup** (cleanmgr.exe) to free space' },
+
+                    { step: 42, action: '**Scenario 5: Server Down Recovery** - Boot from Windows Server installation media' },
+                    { step: 43, action: 'Select **Repair your computer** → **Troubleshoot** → **System Image Recovery**' },
+                    { step: 44, action: 'Select backup image created earlier → Follow wizard to restore' }
+                ],
+
+                verification: {
+                    type: 'manual',
+                    description: 'Verify backup, Hyper-V, monitoring, and troubleshooting',
+                    expectedResult: 'Backup schedule configured for daily 2AM backup. Hyper-V installed with External Switch and TestVM1 created. Performance Monitor showing CPU, Memory, Disk metrics. Troubleshooting scenarios completed: account unlock, DNS flush, GPO report generated, large files identified, recovery steps documented.'
                 }
             }
         ],
 
         summary: {
             whatYouLearned: [
-                'Deploying Windows Server 2025 Azure Edition',
-                'Understanding Hotpatching capabilities',
-                'Basic VM management in Azure'
+                'Windows Server 2025 complete administration from setup to advanced topics',
+                'User and group management (local and Active Directory)',
+                'Active Directory Domain Services deployment and management',
+                'DNS and DHCP configuration and troubleshooting',
+                'Group Policy implementation for centralized management',
+                'File server configuration with NTFS and Share permissions',
+                'Network configuration and firewall management',
+                'Security hardening with Windows Defender and audit policies',
+                'PowerShell automation for user management and reporting',
+                'Backup and disaster recovery procedures',
+                'Hyper-V virtualization management',
+                'Performance monitoring and optimization',
+                'Real-world troubleshooting scenarios'
             ],
             nextSteps: [
-                'Configure Active Directory Domain Services',
-                'Set up Storage Spaces Direct'
+                'Practice advanced PowerShell scripting',
+                'Explore Windows Admin Center for remote management',
+                'Study for Microsoft certification exams (AZ-800, AZ-801)',
+                'Implement advanced security features (AppLocker, WSUS)',
+                'Learn Azure Arc for hybrid cloud management'
             ],
             additionalResources: [
                 {
                     title: 'Windows Server 2025 Documentation',
                     url: 'https://learn.microsoft.com/windows-server/',
+                    type: 'documentation'
+                },
+                {
+                    title: 'Active Directory Best Practices',
+                    url: 'https://learn.microsoft.com/windows-server/identity/ad-ds/plan/security-best-practices/best-practices-for-securing-active-directory',
+                    type: 'documentation'
+                },
+                {
+                    title: 'PowerShell Documentation',
+                    url: 'https://learn.microsoft.com/powershell/',
                     type: 'documentation'
                 }
             ]
