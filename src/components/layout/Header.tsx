@@ -77,7 +77,7 @@ export function Header() {
           <img
             src="/hexalabs-logo.png"
             alt="Hexalabs"
-            className="h-20 w-auto"
+            className="h-30 w-auto"
           />
         </Link>
 
@@ -184,7 +184,7 @@ export function Header() {
                     </Link>
 
                     <Link
-                      href="/dashboard/orders"
+                      href="/orders"
                       className="flex items-center gap-3 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
                       onClick={() => setIsDropdownOpen(false)}
                     >
