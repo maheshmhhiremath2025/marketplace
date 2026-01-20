@@ -6,6 +6,7 @@ import { Header } from "@/components/layout/Header";
 import { NavigationBar } from "@/components/layout/NavigationBar";
 import { Footer } from "@/components/layout/Footer";
 import { Providers } from "@/components/Providers";
+import { Chatbot } from "@/components/Chatbot";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -41,6 +42,7 @@ export default function RootLayoutClient({
                         {children}
                     </main>
                     <Footer />
+                    <Chatbot />
                 </Providers>
             </body>
         </html>

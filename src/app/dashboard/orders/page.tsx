@@ -10,16 +10,21 @@ export default function OrdersPage() {
     const { data: session, status } = useSession();
     const router = useRouter();
     const [orders, setOrders] = useState<any[]>([]);
-    const [loading, setLoading] = useState(true);
+    const [loading, setLoading] = useState(false);
 
+    // Redirect if not authenticated
     useEffect(() => {
         if (status === 'unauthenticated') {
             router.push('/login');
         }
     }, [status, router]);
 
+    // Fetch orders when session is available
     useEffect(() => {
+        if (!session) return;
+
         const fetchOrders = async () => {
+            setLoading(true);
             try {
                 const response = await fetch('/api/orders');
                 if (response.ok) {
@@ -33,15 +38,16 @@ export default function OrdersPage() {
             }
         };
 
-        if (session) {
-            fetchOrders();
-        }
+        fetchOrders();
     }, [session]);
 
-    if (status === 'loading' || loading) {
+    if (status === 'loading') {
         return (
-            <div className="container py-12 text-center">
-                <div className="animate-pulse">Loading orders...</div>
+            <div className="flex-1 bg-gray-50 flex items-center justify-center min-h-screen">
+                <div className="text-center">
+                    <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+                    <p className="text-gray-600">Loading...</p>
+                </div>
             </div>
         );
     }
@@ -87,7 +93,12 @@ export default function OrdersPage() {
                     </div>
                 </div>
 
-                {orders.length === 0 ? (
+                {loading ? (
+                    <div className="text-center py-12">
+                        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+                        <p className="text-gray-600">Loading orders...</p>
+                    </div>
+                ) : orders.length === 0 ? (
                     <div className="bg-white rounded-lg border border-gray-200 p-12 text-center">
                         <Package className="h-16 w-16 text-gray-300 mx-auto mb-4" />
                         <h2 className="text-xl font-semibold text-gray-900 mb-2">
