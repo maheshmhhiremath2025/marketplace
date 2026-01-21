@@ -1,64 +1,104 @@
-version: '3'
+version: '3.8'
+
 services:
-  # MongoDB for the marketplace application
-  mongodb:
-    image: mongo:7
-    container_name: hexalabs-mongodb
+  # Next.js Application with PM2 Cluster Mode
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile.cluster
+    container_name: hexalabs-marketplace
     ports:
-      - "27020:27017"
+      - "3000:3000"
     environment:
-      MONGO_INITDB_ROOT_USERNAME: admin
-      MONGO_INITDB_ROOT_PASSWORD: hexalabs2024
-      MONGO_INITDB_DATABASE: hexalabs
-    volumes:
-      - ./mongodb_data:/data/db
-    networks:
-      - hexalabs-net
-    restart: always
-
-  # The Guacamole web application
-  guacamole:
-    image: guacamole/guacamole
-    container_name: hexalabs-guacamole
+      - NODE_ENV=production
+      - MONGODB_URI=mongodb://mongo:27017/hexalabs
+      - NEXTAUTH_URL=http://localhost:3000
+      - NEXTAUTH_SECRET=${NEXTAUTH_SECRET}
+      - RAZORPAY_KEY_ID=${RAZORPAY_KEY_ID}
+      - RAZORPAY_KEY_SECRET=${RAZORPAY_KEY_SECRET}
     depends_on:
-      - guacd
-      - postgres
+      - mongo
+    networks:
+      - hexalabs-network
+    restart: unless-stopped
+    # Resource limits for better performance
+    deploy:
+      resources:
+        limits:
+          cpus: '2.0'
+          memory: 2G
+        reservations:
+          cpus: '1.0'
+          memory: 1G
+
+  # MongoDB Database
+  mongo:
+    image: mongo:7.0
+    container_name: hexalabs-mongo
     ports:
-      - "8080:8080"
+      - "27017:27017"
     environment:
-      GUACD_HOSTNAME: guacd
-      POSTGRES_HOSTNAME: postgres
-      POSTGRES_DATABASE: guacamole_db
-      POSTGRES_USER: guacamole_user
-      POSTGRES_PASSWORD: guacamole_password
-      # We will need to initialize this on first run
-    networks:
-      - hexalabs-net
-    restart: always
-
-  # The Guacamole proxy daemon (handles RDP/SSH connections)
-  guacd:
-    image: guacamole/guacd
-    container_name: hexalabs-guacd
-    networks:
-      - hexalabs-net
-    restart: always
-
-  # Database for storing connection configurations
-  postgres:
-    image: postgres:13
-    container_name: hexalabs-postgres
-    environment:
-      POSTGRES_DB: guacamole_db
-      POSTGRES_USER: guacamole_user
-      POSTGRES_PASSWORD: guacamole_password
+      - MONGO_INITDB_ROOT_USERNAME=admin
+      - MONGO_INITDB_ROOT_PASSWORD=hexalabs123
+      - MONGO_INITDB_DATABASE=hexalabs
     volumes:
-      - ./postgres_data:/var/lib/postgresql/data
-      - ./init/initdb.sql:/docker-entrypoint-initdb.d/initdb.sql
+      - mongo-data:/data/db
+      - ./mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
     networks:
-      - hexalabs-net
-    restart: always
+      - hexalabs-network
+    restart: unless-stopped
+    # MongoDB resource limits
+    deploy:
+      resources:
+        limits:
+          cpus: '1.0'
+          memory: 1G
+        reservations:
+          cpus: '0.5'
+          memory: 512M
+
+  # MongoDB Express (Optional - Database UI)
+  mongo-express:
+    image: mongo-express:latest
+    container_name: hexalabs-mongo-express
+    ports:
+      - "8081:8081"
+    environment:
+      - ME_CONFIG_MONGODB_ADMINUSERNAME=admin
+      - ME_CONFIG_MONGODB_ADMINPASSWORD=hexalabs123
+      - ME_CONFIG_MONGODB_URL=mongodb://admin:hexalabs123@mongo:27017/
+      - ME_CONFIG_BASICAUTH_USERNAME=admin
+      - ME_CONFIG_BASICAUTH_PASSWORD=admin
+    depends_on:
+      - mongo
+    networks:
+      - hexalabs-network
+    restart: unless-stopped
+
+  # Redis for session management and caching (optional but recommended)
+  redis:
+    image: redis:7-alpine
+    container_name: hexalabs-redis
+    ports:
+      - "6379:6379"
+    command: redis-server --appendonly yes
+    volumes:
+      - redis-data:/data
+    networks:
+      - hexalabs-network
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 256M
 
 networks:
-  hexalabs-net:
+  hexalabs-network:
     driver: bridge
+
+volumes:
+  mongo-data:
+    driver: local
+  redis-data:
+    driver: local

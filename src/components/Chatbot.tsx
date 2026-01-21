@@ -23,57 +23,15 @@ export function Chatbot() {
     const [inputMessage, setInputMessage] = useState('');
     const [isTyping, setIsTyping] = useState(false);
 
-    // Auto-responses based on keywords
-    const getAutoResponse = (userMessage: string): string => {
-        const message = userMessage.toLowerCase();
-
-        if (message.includes('lab') && (message.includes('launch') || message.includes('start'))) {
-            return 'To launch a lab, go to your Dashboard, find the lab you purchased, and click "Launch Lab". The VM will be provisioned in 2-3 minutes. You can then access it via the web-based RDP console.';
-        }
-
-        if (message.includes('payment') || message.includes('pay')) {
-            return 'We accept payments via Razorpay (UPI, Cards, Net Banking, Wallets) and Purchase Orders for organizations. All payments are secure and encrypted.';
-        }
-
-        if (message.includes('refund') || message.includes('cancel')) {
-            return 'For refund requests, please email support@hexalabs.com with your order number. Refunds are processed within 5-7 business days.';
-        }
-
-        if (message.includes('vm') || message.includes('rdp') || message.includes('connect')) {
-            return 'If you\'re having trouble connecting to your VM, please ensure: 1) The VM status shows "Running", 2) Wait 2-3 minutes after launch for Windows to boot, 3) Try refreshing the page. If issues persist, contact support@hexalabs.com';
-        }
-
-        if (message.includes('license') || message.includes('expire')) {
-            return 'Lab licenses are valid for 180 days from purchase. Each lab includes 10 launches with 4-hour sessions. You can check your remaining launches in the Dashboard.';
-        }
-
-        if (message.includes('organization') || message.includes('bulk')) {
-            return 'For organization licenses and bulk purchases, please contact sales@hexalabs.com or use the "Request Organization Account" feature in your profile.';
-        }
-
-        if (message.includes('support') || message.includes('help') || message.includes('contact')) {
-            return 'You can reach our support team at:\n📧 Email: support@hexalabs.com\n💬 Live Chat: Available 9 AM - 6 PM IST\n📞 Phone: +91 88849 07660';
-        }
-
-        if (message.includes('hello') || message.includes('hi') || message.includes('hey')) {
-            return 'Hello! How can I assist you today? I can help with lab launches, payments, VM connections, licenses, and more.';
-        }
-
-        if (message.includes('thank')) {
-            return 'You\'re welcome! Is there anything else I can help you with? 😊';
-        }
-
-        // Default response
-        return 'I\'m here to help! For specific issues, please contact our support team at support@hexalabs.com or call +91 88849 07660. Common topics I can help with:\n\n• Lab launches\n• Payment issues\n• VM connections\n• License information\n• Organization accounts';
-    };
-
-    const handleSendMessage = () => {
+    const handleSendMessage = async () => {
         if (!inputMessage.trim()) return;
+
+        const userMessageText = inputMessage;
 
         // Add user message
         const userMessage: Message = {
             id: Date.now().toString(),
-            text: inputMessage,
+            text: userMessageText,
             sender: 'user',
             timestamp: new Date()
         };
@@ -82,17 +40,41 @@ export function Chatbot() {
         setInputMessage('');
         setIsTyping(true);
 
-        // Simulate bot typing and response
-        setTimeout(() => {
+        try {
+            // Call AI API
+            const response = await fetch('/api/chat', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ message: userMessageText }),
+            });
+
+            const data = await response.json();
+
             const botResponse: Message = {
                 id: (Date.now() + 1).toString(),
-                text: getAutoResponse(inputMessage),
+                text: data.response || 'I apologize, but I\'m having trouble responding right now. Please contact support@hexalabs.com for assistance.',
                 sender: 'bot',
                 timestamp: new Date()
             };
+
             setMessages(prev => [...prev, botResponse]);
+        } catch (error) {
+            console.error('Chat error:', error);
+
+            // Fallback response on error
+            const errorResponse: Message = {
+                id: (Date.now() + 1).toString(),
+                text: 'I\'m having trouble connecting right now. For immediate assistance, please contact our support team at support@hexalabs.com or call +91 88849 07660.',
+                sender: 'bot',
+                timestamp: new Date()
+            };
+
+            setMessages(prev => [...prev, errorResponse]);
+        } finally {
             setIsTyping(false);
-        }, 1000);
+        }
     };
 
     const handleKeyPress = (e: React.KeyboardEvent) => {
@@ -158,8 +140,8 @@ export function Chatbot() {
                             >
                                 <div
                                     className={`max-w-[80%] rounded-lg p-3 ${message.sender === 'user'
-                                            ? 'bg-blue-600 text-white'
-                                            : 'bg-white text-gray-800 border border-gray-200'
+                                        ? 'bg-blue-600 text-white'
+                                        : 'bg-white text-gray-800 border border-gray-200'
                                         }`}
                                 >
                                     <p className="text-sm whitespace-pre-wrap">{message.text}</p>

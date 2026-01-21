@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { Loader2, RotateCw, X, Trash2, Clock } from "lucide-react";
+import { Loader2, RotateCw, X, Trash2, Clock, Download } from "lucide-react";
 import ConfirmModal from './ConfirmModal';
 
 interface LabControlsProps {

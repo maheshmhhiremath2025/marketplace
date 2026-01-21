@@ -11,6 +11,7 @@ interface LabConnectClientProps {
     courseId: string;
     status: string;
     vmPublicIP?: string;
+    requiresAzurePortal?: boolean; // NEW: Flag from course data
     sessionData: {
         id: string;
         startTime: Date;
@@ -27,7 +28,7 @@ interface LabConnectClientProps {
     };
 }
 
-export default function LabConnectClient({ purchaseId, courseId, status, vmPublicIP, sessionData }: LabConnectClientProps) {
+export default function LabConnectClient({ purchaseId, courseId, status, vmPublicIP, requiresAzurePortal, sessionData }: LabConnectClientProps) {
     const [showInstructions, setShowInstructions] = useState(true);
 
     return (
@@ -62,6 +63,7 @@ export default function LabConnectClient({ purchaseId, courseId, status, vmPubli
                             azureUsername={sessionData.azureUsername}
                             azurePassword={sessionData.azurePassword}
                             azureResourceGroup={sessionData.azureResourceGroup}
+                            requiresAzurePortal={requiresAzurePortal}
                         />
                     </div>
                 )}

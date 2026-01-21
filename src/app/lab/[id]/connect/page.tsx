@@ -5,6 +5,7 @@ import User from '@/models/User';
 import { labManager } from '@/lib/azure/lab-manager';
 import Link from 'next/link';
 import LabConnectClient from '@/components/lab/LabConnectClient';
+import { MOCK_COURSES } from '@/lib/mock-data';
 
 export default async function LabConnectPage(props: { params: Promise<{ id: string }> }) {
     const session = await getServerSession(authOptions);
@@ -94,11 +95,15 @@ export default async function LabConnectPage(props: { params: Promise<{ id: stri
         maxLaunches: labEntry.maxLaunches || 10
     };
 
+    // Get course data to check if it requires Azure Portal
+    const course = MOCK_COURSES.find(c => c.id === labEntry.courseId);
+
     return <LabConnectClient
         purchaseId={purchaseId}
         courseId={labEntry.courseId}
         status={status}
         vmPublicIP={vmPublicIP}
+        requiresAzurePortal={course?.requiresAzurePortal}
         sessionData={sessionData}
     />;
 }

@@ -60,7 +60,7 @@ export function PaymentStep({ data, onUpdate, onNext, onBack }: PaymentStepProps
                     currency: 'INR',
                     name: 'Hexalabs',
                     description: 'Lab License Purchase',
-                    image: '/hexalabs-logo.png',
+                    image: `${window.location.origin}/hexalabs-logo.png`,
                     order_id: orderId,
                     handler: async function (response: any) {
                         try {

@@ -45,6 +45,8 @@ export const MOCK_COURSES: Course[] = [
         category: 'Microsoft Data Platform',
         tags: ['Fabric', 'Copilot', 'AI'],
         level: 'Intermediate',
+    
+        requiresAzurePortal: true,
     },
     {
         id: 'dp-3028',
@@ -56,6 +58,8 @@ export const MOCK_COURSES: Course[] = [
         category: 'Microsoft Data Platform',
         tags: ['AI', 'Databricks', 'Azure'],
         level: 'Advanced',
+    
+        requiresAzurePortal: true,
     },
     {
         id: 'm55601-1a',
@@ -89,6 +93,8 @@ export const MOCK_COURSES: Course[] = [
         category: 'Microsoft Data Platform',
         tags: ['Fabric', 'Data Engineering'],
         level: 'Advanced',
+    
+        requiresAzurePortal: true,
     },
     {
         id: 'az-2007',
@@ -111,6 +117,8 @@ export const MOCK_COURSES: Course[] = [
         category: 'Microsoft AI',
         tags: ['AI', 'Azure', 'Agents'],
         level: 'Advanced',
+    
+        requiresAzurePortal: true,
     },
     {
         id: 'sc-401t00-a',
@@ -166,6 +174,8 @@ export const MOCK_COURSES: Course[] = [
         category: 'Microsoft Azure',
         tags: ['Azure', 'DevOps', 'Security'],
         level: 'Intermediate',
+    
+        requiresAzurePortal: true,
     },
     {
         id: 'm55625a',
@@ -334,6 +344,8 @@ export const MOCK_COURSES: Course[] = [
         category: 'Microsoft Azure',
         tags: ['Azure', 'Testing', 'GitHub Actions'],
         level: 'Intermediate',
+    
+        requiresAzurePortal: true,
     },
     {
         id: 'mb-280t04',
@@ -389,6 +401,8 @@ export const MOCK_COURSES: Course[] = [
         category: 'Microsoft Security',
         tags: ['Security', 'Architecture'],
         level: 'Advanced',
+    
+        requiresAzurePortal: true,
     },
     {
         id: 'az-140t00-a',
@@ -400,6 +414,8 @@ export const MOCK_COURSES: Course[] = [
         category: 'Microsoft Azure',
         tags: ['Azure', 'Virtual Desktop'],
         level: 'Intermediate',
+    
+        requiresAzurePortal: true,
     },
     {
         id: 'dp-3021',
@@ -411,6 +427,8 @@ export const MOCK_COURSES: Course[] = [
         category: 'Microsoft Data Platform',
         tags: ['Azure', 'PostgreSQL', 'Migration'],
         level: 'Intermediate',
+    
+        requiresAzurePortal: true,
     },
     {
         id: 'az-1010',
@@ -422,6 +440,8 @@ export const MOCK_COURSES: Course[] = [
         category: 'Microsoft Azure',
         tags: ['Azure', 'Arc', 'Servers'],
         level: 'Intermediate',
+    
+        requiresAzurePortal: true,
     },
     {
         id: 'ai-3019',
@@ -433,6 +453,8 @@ export const MOCK_COURSES: Course[] = [
         category: 'Microsoft AI',
         tags: ['AI', 'PostgreSQL', 'Azure'],
         level: 'Advanced',
+    
+        requiresAzurePortal: true,
     },
     {
         id: 'pl-400t00-a',
@@ -444,6 +466,8 @@ export const MOCK_COURSES: Course[] = [
         category: 'Microsoft Power Platform',
         tags: ['Power Platform', 'Development'],
         level: 'Advanced',
+    
+        requiresAzurePortal: true,
     },
     {
         id: 'az-1007',
@@ -455,6 +479,8 @@ export const MOCK_COURSES: Course[] = [
         category: 'Microsoft Azure',
         tags: ['Azure', 'Linux', 'VMs'],
         level: 'Intermediate',
+    
+        requiresAzurePortal: true,
     },
     {
         id: 'pl-300t00-a',
@@ -466,6 +492,8 @@ export const MOCK_COURSES: Course[] = [
         category: 'Microsoft Power Platform',
         tags: ['Power BI', 'Data', 'Analytics'],
         level: 'Intermediate',
+    
+        requiresAzurePortal: true,
     },
     {
         id: 'az-104t00-a',
@@ -524,6 +552,8 @@ export const MOCK_COURSES: Course[] = [
         category: 'Microsoft AI',
         tags: ['AI', 'Fundamentals', 'Azure'],
         level: 'Beginner',
+    
+        requiresAzurePortal: true,
     },
     {
         id: 'dp-900t00-a',
@@ -535,6 +565,8 @@ export const MOCK_COURSES: Course[] = [
         category: 'Microsoft Data Platform',
         tags: ['Data', 'Fundamentals', 'Azure'],
         level: 'Beginner',
+    
+        requiresAzurePortal: true,
     },
     {
         id: 'pl-900t00-a',
@@ -557,6 +589,8 @@ export const MOCK_COURSES: Course[] = [
         category: 'Microsoft Security',
         tags: ['Security', 'Compliance', 'Identity'],
         level: 'Beginner',
+    
+        requiresAzurePortal: true,
     },
     {
         id: 'ms-700t00-a',
@@ -624,6 +658,8 @@ export const MOCK_COURSES: Course[] = [
         category: 'Microsoft Data Platform',
         tags: ['Cosmos DB', 'NoSQL', 'Azure'],
         level: 'Advanced',
+    
+        requiresAzurePortal: true,
     },
     {
         id: 'dp-600t00-a',
@@ -635,6 +671,8 @@ export const MOCK_COURSES: Course[] = [
         category: 'Microsoft Data Platform',
         tags: ['Fabric', 'Analytics'],
         level: 'Advanced',
+    
+        requiresAzurePortal: true,
     },
     {
         id: 'ai-102t00-a',
@@ -713,6 +751,8 @@ export const MOCK_COURSES: Course[] = [
         category: 'Microsoft Azure',
         tags: ['Azure', 'Networking'],
         level: 'Advanced',
+    
+        requiresAzurePortal: true,
     },
     {
         id: 'az-800t00-a',
@@ -724,6 +764,8 @@ export const MOCK_COURSES: Course[] = [
         category: 'Microsoft Azure',
         tags: ['Windows Server', 'Hybrid', 'Azure'],
         level: 'Advanced',
+    
+        requiresAzurePortal: true,
     },
     {
         id: 'az-801t00-a',
@@ -735,5 +777,7 @@ export const MOCK_COURSES: Course[] = [
         category: 'Microsoft Azure',
         tags: ['Windows Server', 'Hybrid', 'Azure'],
         level: 'Advanced',
+    
+        requiresAzurePortal: true,
     },
 ];
